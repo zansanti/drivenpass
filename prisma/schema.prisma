@@ -1,0 +1,30 @@
+// Configurações que já estavam (NÃO REMOVA)
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Modelos que você deve adicionar (NOVOS)
+model User {
+  id       Int     @id @default(autoincrement())
+  name     String
+  email    String  @unique
+  password String
+  credentials Credential[]
+}
+
+model Credential {
+  id       Int     @id @default(autoincrement())
+  title    String
+  url      String
+  username String
+  password String
+  userId   Int
+  user     User    @relation(fields: [userId], references: [id])
+  @@unique([title, userId]) // Título único por usuário
+}
