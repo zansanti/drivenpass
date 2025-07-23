@@ -3,7 +3,8 @@ import * as authService from '../services/authService';
 
 export async function signUp(req: Request, res: Response) {
   try {
-    const user = await authService.createUser(req.body);
+    const { name, email, password } = req.body;
+    const user = await authService.createUser({ name, email, password }); 
     res.status(201).json({ id: user.id, email: user.email });
   } catch (err) {
     if (err instanceof Error && err.message === 'Email already exists') {

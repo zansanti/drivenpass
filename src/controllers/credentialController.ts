@@ -42,3 +42,34 @@ export async function deleteCredential(req: Request, res: Response) {
     res.status(500).send('Internal server error');
   }
 }
+
+export async function updateCredential(req: Request, res: Response) {
+  const { id } = req.params;
+  const userId = res.locals.userId;
+  const { title, url, username, password } = req.body;
+
+  try {
+    await credentialService.updateCredential(Number(id), userId, {
+      title,
+      url,
+      username,
+      password,
+    });
+    res.sendStatus(204); // No Content
+  } catch (err) {
+    if (err instanceof Error) {
+      switch (err.message) {
+        case 'Credential not found':
+          return res.status(404).send(err.message);
+        case 'Title already exists':
+          return res.status(409).send(err.message);
+        default:
+          console.error('Unexpected error:', err);
+          return res.status(500).send('Internal server error');
+      }
+    }
+    // Caso raro onde o erro não é do tipo Error
+    console.error('Non-Error exception:', err);
+    res.status(500).send('Internal server error');
+  }
+}
