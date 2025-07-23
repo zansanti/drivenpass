@@ -8,7 +8,8 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate deploy",
     "seed": "ts-node src/prisma/seed.ts",
-    "start": "ts-node src/app.ts"
+    "start": "node dist/app.js",
+    "postinstall": "npm run prisma:generate && npm run prisma:migrate"
   },
   "keywords": [],
   "author": "",
