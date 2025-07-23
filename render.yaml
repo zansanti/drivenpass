@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: drivenpass-api
+    runtime: node
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: drivenpass-db
+          property: connectionString
+      - key: JWT_SECRET
+        value: sua_chave_secreta_aqui
+      - key: CRYPTR_SECRET
+        value: chave_de_32_caracteres_aqui
